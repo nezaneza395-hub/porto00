@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neza Ismawardhani | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red: #ff1e4b;
+            --red-dark: #b01030;
+            --gold: #ffcc00;
+            --bg: #050508;
+            --card: rgba(14, 10, 22, 0.82);
+            --border: rgba(255, 30, 75, 0.28);
+            --text: #f2f2f2;
+            --muted: #9a9a9a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            cursor: none;
+            min-height: 100vh;
+        }
+
+        /* ========== CUSTOM CURSOR + SMOKE ========== */
+        .cursor {
+            position: fixed;
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.18s ease, height 0.18s ease, background 0.18s, border-color 0.18s;
+            mix-blend-mode: difference;
+        }
+        .cursor.clicked {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 30, 75, 0.22);
+            border-color: var(--gold);
+        }
+        .cursor-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10001;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-trail {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            filter: blur(4px);
+            mix-blend-mode: screen;
+            animation: trailFade 1.1s ease-out forwards;
+        }
+        @keyframes trailFade {
+            0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.6); }
+            40% { opacity: 0.55; }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(3.2); }
+        }
+        .click-ripple {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--red);
+            pointer-events: none;
+            z-index: 9997;
+            animation: ripple 0.65s ease-out forwards;
+        }
+        @keyframes ripple {
+            0% { width: 12px; height: 12px; opacity: 1; }
+            100% { width: 90px; height: 90px; opacity: 0; }
+        }
+
+        /* ========== SPACE BACKGROUND ========== */
+        .space-bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 12% 18%, rgba(180, 20, 50, 0.2) 0%, transparent 48%),
+                radial-gradient(ellipse at 88% 78%, rgba(100, 8, 35, 0.18) 0%, transparent 52%),
+                radial-gradient(ellipse at 50% 50%, rgba(18, 5, 15, 0.5) 0%, transparent 70%),
+                linear-gradient(165deg, #050508 0%, #0a0612 45%, #120810 100%);
+            z-index: -5;
+        }
+        #stars { position: fixed; inset: 0; z-index: -4; pointer-events: none; }
+
+        .mars {
+            position: fixed;
+            width: 170px; height: 170px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 32% 28%, #ff8a6a, #c0392b 42%, #6b1c12 72%, #1f0804);
+            top: 8%; right: 6%;
+            box-shadow: 0 0 90px rgba(220, 45, 30, 0.5), inset -28px -22px 45px rgba(0,0,0,0.6);
+            z-index: -3;
+            animation: floatMars 24s ease-in-out infinite;
+            opacity: 0.9;
+        }
+        .mars::after {
+            content: '';
+            position: absolute; inset: 16%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 60% 40%, transparent 35%, rgba(0,0,0,0.3));
+            filter: blur(3px);
+        }
+        @keyframes floatMars {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-34px) rotate(14deg); }
+        }
+        .planet-small {
+            position: fixed;
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 32%, #ffcc88, #cc5500 68%, #2a1000);
+            bottom: 14%; left: 4%;
+            box-shadow: 0 0 28px rgba(255, 100, 40, 0.45);
+            z-index: -3;
+            animation: floatPlanet 16s ease-in-out infinite reverse;
+        }
+        @keyframes floatPlanet {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-22px); }
+        }
+        .grid-lines {
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(90deg, rgba(220, 20, 60, 0.045) 1px, transparent 1px),
+                linear-gradient(rgba(220, 20, 60, 0.045) 1px, transparent 1px);
+            background-size: 72px 72px;
+            z-index: -2;
+            pointer-events: none;
+            mask-image: radial-gradient(ellipse at center, black 12%, transparent 72%);
+        }
+
+        /* ========== NAV ========== */
+        .top-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 16px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(5, 5, 8, 0.75);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 30, 75, 0.15);
+            transition: all 0.3s ease;
+        }
+        .top-nav.scrolled {
+            padding: 12px 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--red), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-link {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #c8c8c8;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: none;
+            transition: all 0.25s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background: rgba(255, 30, 75, 0.18);
+            border-color: rgba(255, 30, 75, 0.4);
+            box-shadow: 0 0 18px rgba(255, 30, 75, 0.25);
+        }
+
+        /* ========== LAYOUT ========== */
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 100px 22px 70px;
+        }
+
+        section {
+            margin-bottom: 70px;
+            scroll-margin-top: 90px;
+        }
+
+        .section-label {
+            font-size: 0.78rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #fff, #ffb3c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-desc {
+            color: var(--muted);
+            font-size: 0.98rem;
+            margin-bottom: 28px;
+            max-width: 520px;
+        }
+
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 36px 40px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(220,20,60,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--red), var(--gold), var(--red), transparent);
+            opacity: 0.75;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            min-height: 70vh;
+            padding-top: 20px;
+        }
+        .hero-content { flex: 1; }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 30, 75, 0.12);
+            border: 1px solid rgba(255, 30, 75, 0.35);
+            color: #ff8fa3;
+            font-size: 0.82rem;
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin-bottom: 18px;
+        }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shine 3.5s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+        .hero p {
+            color: #b0b0b0;
+            font-size: 1.08rem;
+            line-height: 1.65;
+            margin-bottom: 28px;
+            max-width: 480px;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: none;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--red), #d01040);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(255, 30, 75, 0.35);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(255, 30, 75, 0.45);
+        }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(255, 30, 75, 0.4);
+            color: #ffb3c1;
+        }
+        .btn-ghost:hover {
+            background: rgba(255, 30, 75, 0.12);
+            border-color: var(--red);
+            color: #fff;
+        }
+
+        /* ========== AVATAR WITH EFFECTS ========== */
+        .hero-visual {
+            flex-shrink: 0;
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 230px;
+            height: 230px;
+            z-index: 5;
+        }
+
+        .avatar-big {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 3px solid rgba(255, 30, 75, 0.7);
+            box-shadow:
+                0 0 40px rgba(255, 30, 75, 0.45),
+                0 0 80px rgba(255, 30, 75, 0.2),
+                0 20px 40px rgba(0,0,0,0.5);
+            background: #1a0a12;
+            position: relative;
+            z-index: 4;
+        }
+
+        /* Animated spinning rings */
+        .avatar-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .avatar-ring-1 {
+            width: 250px;
+            height: 250px;
+            border-top: 2px solid var(--red);
+            border-right: 2px solid transparent;
+            border-bottom: 2px solid var(--gold);
+            border-left: 2px solid transparent;
+            animation: spinRing 8s linear infinite;
+            z-index: 3;
+        }
+        .avatar-ring-2 {
+            width: 275px;
+            height: 275px;
+            border-top: 1.5px solid rgba(255, 204, 0, 0.6);
+            border-right: 1.5px solid transparent;
+            border-bottom: 1.5px solid rgba(255, 30, 75, 0.5);
+            border-left: 1.5px solid transparent;
+            animation: spinRing 12s linear infinite reverse;
+            z-index: 2;
+        }
+        .avatar-ring-3 {
+            width: 300px;
+            height: 300px;
+            border: 1px dashed rgba(255, 30, 75, 0.25);
+            animation: spinRing 20s linear infinite;
+            z-index: 1;
+        }
+        @keyframes spinRing { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* Red smoke particles around avatar */
+        .smoke-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(6px);
+            mix-blend-mode: screen;
+            animation: smokeFloat 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes smokeFloat {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.5; }
+            50% { transform: translateY(-25px) scale(1.3); opacity: 0.8; }
+        }
+
+        /* Floating stars near avatar */
+        .avatar-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ff8fa3, 0 0 16px var(--red);
+            animation: twinkleStar 2.5s ease-in-out infinite;
+            z-index: 6;
+        }
+        @keyframes twinkleStar {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        /* Galaxy glow behind avatar */
+        .galaxy-glow {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(255, 30, 75, 0.25) 0%,
+                rgba(180, 20, 50, 0.12) 35%,
+                transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulseGlow 5s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        /* ========== ABOUT ========== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+        .info-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 18px 20px;
+            transition: all 0.3s ease;
+        }
+        .info-item:hover {
+            background: rgba(255, 30, 75, 0.08);
+            border-color: rgba(255, 30, 75, 0.35);
+            transform: translateY(-4px);
+        }
+        .info-item .label {
+            font-size: 0.72rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 5px;
+        }
+        .info-item .value {
+            font-size: 0.98rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* ========== EDUCATION ========== */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--red), transparent);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+            padding-left: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 7px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 14px var(--red);
+        }
+        .timeline-item h4 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .timeline-item .period {
+            font-size: 0.85rem;
+            color: #ff8fa3;
+            margin-bottom: 6px;
+        }
+        .timeline-item p {
+            font-size: 0.92rem;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        /* Photo Gallery SMA */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            border: 1px solid rgba(255, 30, 75, 0.25);
+            cursor: none;
+            transition: all 0.35s ease;
+            background: rgba(255,255,255,0.03);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover {
+            border-color: var(--red);
+            box-shadow: 0 12px 30px rgba(255, 30, 75, 0.3);
+            transform: translateY(-4px);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        .gallery-item .caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 10px 12px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            font-size: 0.78rem;
+            color: #eee;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .caption {
+            opacity: 1;
+        }
+
+        /* ========== SKILLS (FIXED) ========== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .skill-card {
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,30,75,0.22);
+            border-radius: 18px;
+            padding: 24px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .skill-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--red);
+            box-shadow: 0 12px 28px rgba(255,30,75,0.22);
+            background: rgba(255,30,75,0.08);
+        }
+        .skill-card .icon {
+            font-size: 2.1rem;
+            margin-bottom: 12px;
+        }
+        .skill-card .name {
+            font-weight: 600;
+            font-size: 0.98rem;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+        .skill-card .level {
+            font-size: 0.78rem;
+            color: #ff8fa3;
+        }
+
+        /* ========== FOLDERS SHOWCASE (TikTok style) ========== */
+        .folders-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .folder-card {
+            background: rgba(12, 8, 20, 0.85);
+            border: 1px solid rgba(255, 30, 75, 0.3);
+            border-radius: 18px;
+            padding: 0;
+            overflow: hidden;
+            cursor: none;
+            transition: all 0.35s ease;
+            position: relative;
+            aspect-ratio: 1.1;
+            display: flex;
+            flex-direction: column;
+        }
+        .folder-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--red);
+            box-shadow: 0 16px 40px rgba(255, 30, 75, 0.3);
+        }
+        .folder-preview {
+            flex: 1;
+            background: linear-gradient(160deg, #1a0f1f 0%, #0d0814 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .folder-preview::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,30,75,0.15), transparent 60%);
+        }
+        .folder-icon {
+            font-size: 3.2rem;
+            opacity: 0.9;
+            z-index: 1;
+            filter: drop-shadow(0 0 12px rgba(255,30,75,0.4));
+        }
+        .folder-info {
+            padding: 16px 18px;
+            background: rgba(8, 5, 14, 0.9);
+            border-top: 1px solid rgba(255,30,75,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .folder-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .folder-count {
+            background: rgba(255,30,75,0.2);
+            color: #ff8fa3;
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* ========== HOBI (FIXED LAYOUT) ========== */
+        .hobi-visual {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .hobi-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,30,75,0.25);
+            border-radius: 18px;
+            padding: 20px 14px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .hobi-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--red);
+            box-shadow: 0 12px 28px rgba(255,30,75,0.22);
+        }
+        .hobi-card .icon { font-size: 2rem; margin-bottom: 8px; }
+        .hobi-card .name { font-size: 0.92rem; font-weight: 600; }
+        .hobi-card .sub { font-size: 0.75rem; color: #ff8fa3; margin-top: 4px; }
+
+        .hobi-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .hobi-badge {
+            background: linear-gradient(135deg, rgba(255,30,75,0.14), rgba(255,200,0,0.07));
+            border: 1px solid rgba(255,30,75,0.35);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.86rem;
+            transition: all 0.3s ease;
+        }
+        .hobi-badge:hover {
+            background: linear-gradient(135deg, rgba(255,30,75,0.28), rgba(255,200,0,0.15));
+            transform: scale(1.05);
+            box-shadow: 0 0 16px rgba(255,30,75,0.3);
+        }
+
+        /* ========== CONTACT (FIXED) ========== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .contact-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 18px;
+            padding: 24px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .contact-item:hover {
+            background: rgba(255,30,75,0.1);
+            border-color: rgba(255,30,75,0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(255,30,75,0.2);
+        }
+        .contact-item .icon { font-size: 1.6rem; margin-bottom: 10px; }
+        .contact-item .label { font-size: 0.78rem; color: #888; margin-bottom: 6px; }
+        .contact-item .value { font-size: 0.9rem; font-weight: 500; word-break: break-word; line-height: 1.4; }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            text-align: center;
+            color: #555;
+            font-size: 0.85rem;
+            padding: 30px 0 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .footer span { color: var(--red); }
+
+        /* ========== MUSIC ========== */
+        #yt-player {
+            position: absolute;
+            width: 1px; height: 1px;
+            opacity: 0;
+            pointer-events: none;
+            left: -9999px;
+        }
+        .music-indicator {
+            position: fixed;
+            bottom: 26px;
+            right: 26px;
+            width: 52px;
+            height: 52px;
+            background: rgba(12, 8, 18, 0.9);
+            border: 1px solid rgba(255, 30, 75, 0.55);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            z-index: 200;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 24px rgba(255, 30, 75, 0.28);
+        }
+        .music-indicator:hover {
+            transform: scale(1.12);
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(255, 200, 0, 0.35);
+        }
+        .music-indicator .icon { font-size: 1.35rem; }
+        .music-indicator .bars {
+            display: flex;
+            gap: 3px;
+            height: 18px;
+            align-items: flex-end;
+        }
+        .music-indicator .bar {
+            width: 3.5px;
+            background: var(--red);
+            border-radius: 2px;
+            animation: equalizer 0.75s ease-in-out infinite;
+        }
+        .music-indicator .bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+        .music-indicator .bar:nth-child(2) { height: 85%; animation-delay: 0.18s; }
+        .music-indicator .bar:nth-child(3) { height: 55%; animation-delay: 0.36s; }
+        .music-indicator.muted .bars { display: none; }
+        .music-indicator.muted .icon { display: block; }
+        .music-indicator:not(.muted) .icon { display: none; }
+
+        @keyframes equalizer {
+            0%, 100% { transform: scaleY(0.35); }
+            50% { transform: scaleY(1); }
+        }
+
+        .music-toast {
+            position: fixed;
+            bottom: 95px;
+            right: 26px;
+            background: rgba(12, 8, 18, 0.96);
+            border: 1px solid rgba(255, 30, 75, 0.45);
+            color: #ffb3c1;
+            padding: 11px 20px;
+            border-radius: 30px;
+            font-size: 0.84rem;
+            z-index: 201;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+            max-width: 260px;
+            text-align: center;
+        }
+        .music-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            cursor: none;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 92%;
+            max-height: 88vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            border: 2px solid rgba(255,30,75,0.4);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 28px;
+            font-size: 2rem;
+            color: #fff;
+            background: none;
+            border: none;
+            cursor: none;
+            opacity: 0.8;
+        }
+
+        /* Folder Modal */
+        .folder-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .folder-modal.active { display: flex; }
+        .folder-modal-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 520px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        }
+        .folder-modal-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #fff, #ffb3c1);
+            -webkit-text-fill-color: transparent;
+        }
+        .folder-modal-content p {
+            color: var(--muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .folder-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.6rem;
+            cursor: none;
+            opacity: 0.7;
+        }
+        .folder-list {
+            list-style: none;
+        }
+        .folder-list li {
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 0.92rem;
+            transition: all 0.25s;
+        }
+        .folder-list li:hover {
+            background: rgba(255,30,75,0.1);
+            border-color: rgba(255,30,75,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 780px) {
+            .hero { flex-direction: column-reverse; text-align: center; gap: 30px; }
+            .hero p { margin-left: auto; margin-right: auto; }
+            .hero-actions { justify-content: center; }
+            .hero-visual { width: 240px; height: 240px; }
+            .avatar-container { width: 190px; height: 190px; }
+            .avatar-big { width: 190px; height: 190px; }
+            .avatar-ring-1 { width: 210px; height: 210px; }
+            .avatar-ring-2 { width: 230px; height: 230px; }
+            .avatar-ring-3 { width: 250px; height: 250px; }
+            .galaxy-glow { width: 260px; height: 260px; }
+            .gallery { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: repeat(2, 1fr); }
+            .folders-grid { grid-template-columns: 1fr; }
+            .hobi-visual { grid-template-columns: repeat(2, 1fr); }
+            .contact-grid { grid-template-columns: 1fr; }
+            .nav-links { gap: 4px; }
+            .nav-link { padding: 7px 12px; font-size: 0.8rem; }
+            .card { padding: 26px 18px; }
+            .section-title { font-size: 1.7rem; }
+            .top-nav { padding: 12px 16px; }
+            .logo { font-size: 1.1rem; }
+        }
+        @media (max-width: 480px) {
+            .skills-grid, .hobi-visual { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="space-bg"></div>
+    <canvas id="stars"></canvas>
+    <div class="grid-lines"></div>
+    <div class="mars"></div>
+    <div class="planet-small"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- YouTube Player (hidden) -->
+    <div id="yt-player"></div>
+
+    <!-- Music Control -->
+    <div class="music-indicator muted" id="musicBtn" title="Mute / Unmute Musik">
+        <div class="icon">🔇</div>
+        <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+    <div class="music-toast" id="musicToast">Klik di mana saja untuk menyalakan musik 🔊</div>
+
+    <!-- Top Navigation -->
+    <nav class="top-nav" id="topNav">
+        <div class="logo">azzen</div>
+        <div class="nav-links">
+            <button class="nav-link active" data-target="home">Home</button>
+            <button class="nav-link" data-target="about">Tentang</button>
+            <button class="nav-link" data-target="pendidikan">Pendidikan</button>
+            <button class="nav-link" data-target="skills">Skills</button>
+            <button class="nav-link" data-target="showcase">Showcase</button>
+            <button class="nav-link" data-target="hobi">Hobi</button>
+            <button class="nav-link" data-target="kontak">Kontak</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- ========== HOME / HERO ========== -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">✦ Portfolio 2025</div>
+                <h1>Halo, saya<br><span>Neza Ismawardhani</span></h1>
+                <p>Mahasiswa Informatika semester 3 yang sedang menapaki perjalanan belajar di dunia Jaringan dan Pengembangan Perangkat Lunak. Menyukai perpaduan antara logika dan estetika, mulai dari memotret momen, mendengarkan musik, membaca AU/novel, sampai menikmati kecepatan formula 1.</p>
+                <div class="hero-actions">
+                    <a href="#pendidikan" class="btn btn-primary">Lihat Pendidikan</a>
+                    <a href="#kontak" class="btn btn-ghost">Hubungi Saya</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="galaxy-glow"></div>
+                <div class="avatar-ring avatar-ring-3"></div>
+                <div class="avatar-ring avatar-ring-2"></div>
+                <div class="avatar-ring avatar-ring-1"></div>
+                <div class="avatar-container">
+                    <img src="pp.png" alt="Neza Ismawardhani" class="avatar-big" id="profilePhoto">
+                </div>
+                <!-- Floating stars around avatar -->
+                <div class="avatar-star" style="top: 8%; left: 18%; animation-delay: 0s;"></div>
+                <div class="avatar-star" style="top: 15%; right: 12%; animation-delay: 0.6s;"></div>
+                <div class="avatar-star" style="bottom: 20%; left: 5%; animation-delay: 1.2s;"></div>
+                <div class="avatar-star" style="bottom: 12%; right: 8%; animation-delay: 1.8s;"></div>
+                <div class="avatar-star" style="top: 45%; left: -5%; animation-delay: 0.3s;"></div>
+                <div class="avatar-star" style="top: 40%; right: -8%; animation-delay: 1.5s;"></div>
+            </div>
+        </section>
+
+        <!-- ========== ABOUT ========== -->
+        <section id="about">
+            <div class="section-label">About Me</div>
+            <h2 class="section-title">Tentang Saya</h2>
+            <p class="section-desc">Sedikit info tentang siapa saya dan apa yang sedang saya tekuni.</p>
+
+            <div class="card">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">Prodi</div>
+                        <div class="value">Informatika</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Universitas</div>
+                        <div class="value">UNUGHA Cilacap</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Asal</div>
+                        <div class="value">Adipala, Cilacap</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Status</div>
+                        <div class="value">Mahasiswa Aktif • Semester 3</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Minat Utama</div>
+                        <div class="value">Networking & Software Development</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Motto</div>
+                        <div class="value" style="font-size:0.88rem;line-height:1.45">"You don't have to be great to start, but you have to start to be great." — Zig Ziglar</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PENDIDIKAN ========== -->
+        <section id="pendidikan">
+            <div class="section-label">Education</div>
+            <h2 class="section-title">Riwayat Pendidikan</h2>
+            <p class="section-desc">Perjalanan akademik saya dari sekolah hingga sekarang.</p>
+
+            <div class="card">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Universitas Nahdlatul Ulama Al Ghazali Cilacap</h4>
+                        <div class="period">2025 — Sekarang • S1 Informatika</div>
+                        <p>Mahasiswa semester 3 dengan minat pada jaringan komputer dan pengembangan perangkat lunak. Aktif mengikuti organisasi kampus sebagai wadah menambah wawasan serta mempelajari berbagai skill baru.</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h4>MA Raudlatul Huda Adipala</h4>
+                        <div class="period">2022 - 2025</div>
+                        <p>Aktif sebagai pengurus inti organisasi sekolah (OSIS, Pramuka, dan menjabat sebagai ketua PMR selama 1 periode). Terpilih sebagai delegasi siswi berprestasi mewakili Kecamatan Adipala dalam Gelar Anak Daerah (GADA BERCAHAYA KE-31), meraih kejuaraan cabang Kepemimpinan pada Youth Station Jumbara PMR tingkat Kabupaten, serta aktif berkompetisi di bidang seni kaligrafi.</p>
+
+                        <!-- Gallery Foto SMA -->
+                        <div class="gallery">
+                            <div class="gallery-item" data-full="sma1.jpg">
+                                <img src="osis.jpeg" alt="Public Speaking" onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,30,75,0.08)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#ff8fa3;font-size:0.85rem;\'>Presentasi</div>'">
+                                <div class="caption">Public Speaking</div>
+                            </div>
+                            <div class="gallery-item" data-full="sma2.jpg">
+                                <img src="pmr.jpeg" alt="Foto Bersama JUMBARA" onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,30,75,0.08)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#ff8fa3;font-size:0.85rem;\'>Bersama PMI</div>'">
+                                <div class="caption">Bersama Tim JUMBARA</div>
+                            </div>
+                            <div class="gallery-item" data-full="sma3.jpg">
+                                <img src="kaligrafi.jpeg" alt="Kaligrafi Surah Ali Imran" onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,30,75,0.08)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#ff8fa3;font-size:0.85rem;\'>Kaligrafi</div>'">
+                                <div class="caption">Karya Kaligrafi • Surah Ali Imran</div>
+                            </div>
+                            <div class="gallery-item" data-full="sma3.jpg">
+                                <img src="pramuka.jpeg" alt="Pramuka" onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,30,75,0.08)'; this.parentElement.innerHTML+='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#ff8fa3;font-size:0.85rem;\'>Pramuka</div>'">
+                                <div class="caption">Pramuka</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h4>MTs Raudlatul Huda Adipala</h4>
+                        <div class="period">2019 - 2022</div>
+                        <p>Masa-masa membangun fondasi.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>MI YA BAKII Welahan Wetan</h4>
+                        <div class="period">2013 - 2019</div>
+                        <p>Awal perjalanan pendidikan formal.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Skill yang sedang dipelajari</h4>
+                        <div class="period">Ongoing</div>
+                        <p>HTML • CSS • JavaScript • Editing • Fotografi • UI/UX dasar</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SKILLS (FIXED) ========== -->
+        <section id="skills">
+            <div class="section-label">Skills</div>
+            <h2 class="section-title">Kemampuan</h2>
+            <p class="section-desc">Teknologi, keahlian dan pengalaman yang sedang saya kuasai dan kembangkan.</p>
+
+            <div class="card">
+                <div class="skills-grid">
+                    <div class="skill-card" title="Konfigurasi Mikrotik Winbox & Simulasi Cisco">
+                        <div class="icon">📡</div>
+                        <div class="name">Jaringan Komputer</div>
+                        <div class="level">Mikrotik & Cisco</div>
+                    </div>
+                    <div class="skill-card" title="Dasar Pemrograman C++ dan struktur web HTML">
+                        <div class="icon">💻</div>
+                        <div class="name">Pemrograman Dasar</div>
+                        <div class="level">C++ & HTML</div>
+                    </div>
+                    <div class="skill-card" title="Pengelolaan database dasar menggunakan phpMYAdmin">
+                        <div class="icon">🗄️</div>
+                        <div class="name">Database Dasar</div>
+                        <div class="level">phpMYAdmin</div>
+                    </div>
+                    <div class="skill-card" title="Ketua PMR, Juara Youth Station Jumbara PMR & Delegasi GADA">
+                        <div class="icon">🏆</div>
+                        <div class="name">Leadership</div>
+                        <div class="level">Organization & Event</div>
+                    </div>
+                    <div class="skill-card" title="Keahlian menggambar dan kompetisi kaligrafi">
+                        <div class="icon">🎨</div>
+                        <div class="name">Seni & Kaligrafi</div>
+                        <div class="level">Drawing & Art</div>
+                    </div>
+                    <div class="skill-card" title="Fotografi pemandangan & desain menggunakan Canva/CapCut">
+                        <div class="icon">📷</div>
+                        <div class="name">Fotografi & Desain</div>
+                        <div class="level">Hobby & Canva</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SHOWCASE (Folders like TikTok) ========== -->
+        <section id="showcase">
+            <div class="section-label">Portfolio</div>
+            <h2 class="section-title">Showcase</h2>
+            <p class="section-desc">Koleksi project, sertifikat, dan pencapaian saya.</p>
+
+            <div class="folders-grid">
+                <div class="folder-card" data-folder="projects">
+                    <div class="folder-preview">
+                        <div class="folder-icon">📁</div>
+                    </div>
+                    <div class="folder-info">
+                        <span class="folder-name">Projects</span>
+                        <span class="folder-count">Coming Soon</span>
+                    </div>
+                </div>
+                <div class="folder-card" data-folder="certificates">
+                    <div class="folder-preview">
+                        <div class="folder-icon">📜</div>
+                    </div>
+                    <div class="folder-info">
+                        <span class="folder-name">Certificates</span>
+                        <span class="folder-count">Coming Soon</span>
+                    </div>
+                </div>
+                <div class="folder-card" data-folder="awards">
+                    <div class="folder-preview">
+                        <div class="folder-icon">🏅</div>
+                    </div>
+                    <div class="folder-info">
+                        <span class="folder-name">Awards</span>
+                        <span class="folder-count">3+</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== HOBI (FIXED) ========== -->
+        <section id="hobi">
+            <div class="section-label">Interests</div>
+            <h2 class="section-title">Hobi & Minat</h2>
+            <p class="section-desc">Hal-hal yang membuat saya senang di luar coding.</p>
+
+            <div class="card">
+                <div class="hobi-visual">
+                    <div class="hobi-card">
+                        <div class="icon">🏁</div>
+                        <div class="name">Formula 1</div>
+                        <div class="sub">Red Bull & Mercedes</div>
+                    </div>
+                    <div class="hobi-card">
+                        <div class="icon">🎧</div>
+                        <div class="name">Musik</div>
+                        <div class="sub">Dream Pop • Dark Pop</div>
+                    </div>
+                    <div class="hobi-card">
+                        <div class="icon">📸</div>
+                        <div class="name">Fotografi</div>
+                        <div class="sub">Capture the moment</div>
+                    </div>
+                    <div class="hobi-card">
+                        <div class="icon">🎨</div>
+                        <div class="name">Seni & Menggambar</div>
+                        <div class="sub">Kaligrafi & Ilustrasi</div>
+                    </div>
+                    <div class="hobi-card">
+                        <div class="icon">🎬</div>
+                        <div class="name">Editing</div>
+                        <div class="sub">Video & Visual</div>
+                    </div>
+                    <div class="hobi-card">
+                        <div class="icon">📚</div>
+                        <div class="name">Novel / AU</div>
+                        <div class="sub">Banyak banget ✨</div>
+                    </div>
+                </div>
+                <div class="hobi-list">
+                    <span class="hobi-badge">🏁 F1 (Red Bull & Mercedes)</span>
+                    <span class="hobi-badge">🎧 Alternative / Dream Pop</span>
+                    <span class="hobi-badge">🌙 Dark Pop / Modern R&B</span>
+                    <span class="hobi-badge">⚡ EDM / Club Remix</span>
+                    <span class="hobi-badge">📸 Fotografi</span>
+                    <span class="hobi-badge">✂️ Editing</span>
+                    <span class="hobi-badge">📡 Networking</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== KONTAK (FIXED) ========== -->
+        <section id="kontak">
+            <div class="section-label">Contact</div>
+            <h2 class="section-title">Hubungi Saya</h2>
+            <p class="section-desc">Terbuka untuk kolaborasi, pertanyaan, atau sekadar menyapa.</p>
+
+            <div class="card">
+                <div class="contact-grid">
+                    <a href="mailto:nezaneza538@gmail.com" class="contact-item">
+                        <div class="icon">✉️</div>
+                        <div class="label">Email</div>
+                        <div class="value">nezaneza538@gmail.com</div>
+                    </a>
+                    <a href="https://www.instagram.com/issdhaniee/" target="_blank" rel="noopener" class="contact-item">
+                        <div class="icon">📸</div>
+                        <div class="label">Instagram</div>
+                        <div class="value">@issdhaniee</div>
+                    </a>
+                    <div class="contact-item">
+                        <div class="icon">📍</div>
+                        <div class="label">Lokasi</div>
+                        <div class="value">Cilacap, Jawa Tengah</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer">
+            Made with <span>♥</span> by Neza Ismawardhani • 2025
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">×</button>
+        <img src="" alt="Preview" id="lightboxImg">
+    </div>
+
+    <!-- Folder Modal -->
+    <div class="folder-modal" id="folderModal">
+        <div class="folder-modal-content">
+            <button class="folder-modal-close" id="folderModalClose">×</button>
+            <h3 id="folderModalTitle">Folder</h3>
+            <p id="folderModalDesc">Isi folder ini masih dalam proses.</p>
+            <ul class="folder-list" id="folderModalList"></ul>
+        </div>
+    </div>
+
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // ===== CUSTOM CURSOR + DARK RED SMOKE TRAIL =====
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursorDot');
+        let lastTrail = 0;
+
+        function spawnSmoke(x, y) {
+            const count = 2 + Math.floor(Math.random() * 2);
+            for (let i = 0; i < count; i++) {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+
+                const size = 14 + Math.random() * 22;
+                trail.style.width = size + 'px';
+                trail.style.height = size + 'px';
+
+                const r = 140 + Math.floor(Math.random() * 60);
+                const g = 8 + Math.floor(Math.random() * 25);
+                const b = 25 + Math.floor(Math.random() * 30);
+                const alpha = 0.55 + Math.random() * 0.35;
+                trail.style.background = `radial-gradient(circle, rgba(${r},${g},${b},${alpha}) 0%, rgba(${r-40},${g},${b},0) 70%)`;
+
+                const offsetX = (Math.random() - 0.5) * 18;
+                const offsetY = (Math.random() - 0.5) * 18;
+                trail.style.left = (x + offsetX) + 'px';
+                trail.style.top = (y + offsetY) + 'px';
+
+                const duration = 0.9 + Math.random() * 0.5;
+                trail.style.animationDuration = duration + 's';
+
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), duration * 1000 + 50);
+            }
+        }
+
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+
+            const now = Date.now();
+            if (now - lastTrail > 22) {
+                lastTrail = now;
+                spawnSmoke(e.clientX, e.clientY);
+            }
+        });
+
+        document.addEventListener('mousedown', e => {
+            cursor.classList.add('clicked');
+            const ripple = document.createElement('div');
+            ripple.className = 'click-ripple';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 650);
+            playClick();
+        });
+        document.addEventListener('mouseup', () => cursor.classList.remove('clicked'));
+
+        // ===== CLICK SOUND =====
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playClick() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
+            const osc1 = audioCtx.createOscillator();
+            const gain1 = audioCtx.createGain();
+            osc1.connect(gain1); gain1.connect(audioCtx.destination);
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(180, now);
+            osc1.frequency.exponentialRampToValueAtTime(60, now + 0.12);
+            gain1.gain.setValueAtTime(0.22, now);
+            gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+            osc1.start(now); osc1.stop(now + 0.18);
+
+            const osc2 = audioCtx.createOscillator();
+            const gain2 = audioCtx.createGain();
+            osc2.connect(gain2); gain2.connect(audioCtx.destination);
+            osc2.type = 'triangle';
+            osc2.frequency.setValueAtTime(720, now);
+            osc2.frequency.exponentialRampToValueAtTime(280, now + 0.08);
+            gain2.gain.setValueAtTime(0.14, now);
+            gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            osc2.start(now); osc2.stop(now + 0.1);
+
+            const osc3 = audioCtx.createOscillator();
+            const gain3 = audioCtx.createGain();
+            osc3.connect(gain3); gain3.connect(audioCtx.destination);
+            osc3.type = 'sine';
+            osc3.frequency.setValueAtTime(1400, now);
+            osc3.frequency.exponentialRampToValueAtTime(900, now + 0.05);
+            gain3.gain.setValueAtTime(0.07, now);
+            gain3.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+            osc3.start(now); osc3.stop(now + 0.07);
+        }
+
+        // ===== YOUTUBE MUSIC (updated video) =====
+        let player;
+        let isMuted = true;
+        let hasInteracted = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                height: '1',
+                width: '1',
+                videoId: 'hk1mjOTbQ5c',
+                playerVars: {
+                    autoplay: 1,
+                    mute: 1,
+                    loop: 1,
+                    playlist: 'hk1mjOTbQ5c',
+                    controls: 0,
+                    showinfo: 0,
+                    rel: 0,
+                    modestbranding: 1,
+                    playsinline: 1
+                },
+                events: {
+                    onReady: (e) => {
+                        e.target.playVideo();
+                        e.target.setVolume(60);
+                        showToast();
+                    },
+                    onStateChange: (e) => {
+                        if (e.data === YT.PlayerState.ENDED) {
+                            e.target.playVideo();
+                        }
+                    }
+                }
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('musicToast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 7000);
+        }
+
+        function unmuteMusic() {
+            if (!player || hasInteracted) return;
+            hasInteracted = true;
+            try {
+                player.unMute();
+                player.setVolume(60);
+                isMuted = false;
+                document.getElementById('musicBtn').classList.remove('muted');
+                document.getElementById('musicToast').classList.remove('show');
+            } catch (err) {}
+        }
+
+        document.body.addEventListener('click', unmuteMusic, { once: false });
+        document.body.addEventListener('touchstart', unmuteMusic, { once: false });
+
+        document.getElementById('musicBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!player) return;
+            if (isMuted) {
+                player.unMute();
+                player.setVolume(60);
+                isMuted = false;
+                document.getElementById('musicBtn').classList.remove('muted');
+            } else {
+                player.mute();
+                isMuted = true;
+                document.getElementById('musicBtn').classList.add('muted');
+            }
+        });
+
+        // ===== STARS =====
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let ariesStars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            createStars();
+            createAries();
+        }
+        window.addEventListener('resize', resize);
+
+        function createStars() {
+            stars = [];
+            const count = Math.floor((canvas.width * canvas.height) / 3000);
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.7 + 0.3,
+                    speed: Math.random() * 0.28 + 0.04,
+                    opacity: Math.random() * 0.7 + 0.2,
+                    twinkle: (Math.random() - 0.5) * 0.018
+                });
+            }
+        }
+
+        function createAries() {
+            const cx = canvas.width * 0.2;
+            const cy = canvas.height * 0.26;
+            const scale = Math.min(canvas.width, canvas.height) * 0.00115;
+            ariesStars = [
+                { x: 0, y: 0, bright: true },
+                { x: 55, y: -25, bright: true },
+                { x: 95, y: -10, bright: true },
+                { x: 30, y: 40, bright: false },
+                { x: -20, y: 55, bright: false },
+                { x: 70, y: 30, bright: false }
+            ].map(s => ({
+                x: cx + s.x * scale * 18,
+                y: cy + s.y * scale * 18,
+                bright: s.bright,
+                size: s.bright ? 2.9 : 1.9
+            }));
+        }
+
+        function drawAries() {
+            if (ariesStars.length < 2) return;
+            ctx.strokeStyle = 'rgba(255, 80, 100, 0.32)';
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(ariesStars[0].x, ariesStars[0].y);
+            ctx.lineTo(ariesStars[1].x, ariesStars[1].y);
+            ctx.lineTo(ariesStars[2].x, ariesStars[2].y);
+            ctx.moveTo(ariesStars[0].x, ariesStars[0].y);
+            ctx.lineTo(ariesStars[3].x, ariesStars[3].y);
+            ctx.lineTo(ariesStars[4].x, ariesStars[4].y);
+            ctx.moveTo(ariesStars[1].x, ariesStars[1].y);
+            ctx.lineTo(ariesStars[5].x, ariesStars[5].y);
+            ctx.stroke();
+
+            ariesStars.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = s.bright ? 'rgba(255, 180, 190, 0.95)' : 'rgba(255, 150, 170, 0.8)';
+                ctx.fill();
+                if (s.bright) {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size * 3.2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 50, 80, 0.18)';
+                    ctx.fill();
+                }
+            });
+            ctx.fillStyle = 'rgba(255, 100, 120, 0.55)';
+            ctx.font = '11px Outfit';
+            ctx.fillText('♈ Aries', ariesStars[0].x - 20, ariesStars[0].y - 18);
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.opacity += s.twinkle;
+                if (s.opacity > 1 || s.opacity < 0.15) s.twinkle = -s.twinkle;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 200, 210, ${s.opacity})`;
+                ctx.fill();
+                if (s.size > 1.3) {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size * 2.3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 40, 70, ${s.opacity * 0.11})`;
+                    ctx.fill();
+                }
+                s.y += s.speed;
+                if (s.y > canvas.height) {
+                    s.y = 0;
+                    s.x = Math.random() * canvas.width;
+                }
+            });
+            drawAries();
+            requestAnimationFrame(animate);
+        }
+        resize();
+        animate();
+
+        // ===== SMOKE PARTICLES AROUND AVATAR =====
+        function createAvatarSmoke() {
+            const visual = document.querySelector('.hero-visual');
+            if (!visual) return;
+            for (let i = 0; i < 8; i++) {
+                const smoke = document.createElement('div');
+                smoke.className = 'smoke-particle';
+                const size = 30 + Math.random() * 50;
+                smoke.style.width = size + 'px';
+                smoke.style.height = size + 'px';
+                const angle = (i / 8) * Math.PI * 2;
+                const dist = 110 + Math.random() * 30;
+                smoke.style.left = (50 + Math.cos(angle) * (dist / 2.8)) + '%';
+                smoke.style.top = (50 + Math.sin(angle) * (dist / 2.8)) + '%';
+                smoke.style.transform = 'translate(-50%, -50%)';
+                const r = 160 + Math.floor(Math.random() * 40);
+                smoke.style.background = `radial-gradient(circle, rgba(${r},20,40,0.4) 0%, transparent 70%)`;
+                smoke.style.animationDelay = (Math.random() * 3) + 's';
+                smoke.style.animationDuration = (3.5 + Math.random() * 2) + 's';
+                visual.appendChild(smoke);
+            }
+        }
+        createAvatarSmoke();
+
+        // ===== NAVIGATION =====
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const target = document.getElementById(link.dataset.target);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    const active = document.querySelector(`.nav-link[data-target="${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+                }
+            });
+        }, { threshold: 0.35 });
+
+        sections.forEach(sec => observer.observe(sec));
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('topNav');
+            if (window.scrollY > 40) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+
+        // ===== LIGHTBOX =====
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const src = item.dataset.full || item.querySelector('img')?.src;
+                if (src && !src.includes('undefined')) {
+                    lightboxImg.src = src;
+                    lightbox.classList.add('active');
+                }
+            });
+        });
+
+        lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) lightbox.classList.remove('active');
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+                document.getElementById('folderModal').classList.remove('active');
+            }
+        });
+
+        // ===== FOLDER MODAL =====
+        const folderData = {
+            projects: {
+                title: 'Projects',
+                desc: 'Koleksi project yang sedang dan sudah dikerjakan.',
+                items: [
+                    'Portfolio Website (ini!)',
+                    'Coming soon — project jaringan',
+                    'Coming soon — web development'
+                ]
+            },
+            certificates: {
+                title: 'Certificates',
+                desc: 'Sertifikat dan pelatihan yang sudah saya ikuti.',
+                items: [
+                    'Coming soon — sertifikat akan ditambahkan di sini',
+                    'Siapkan file sertifikatmu untuk ditampilkan'
+                ]
+            },
+            awards: {
+                title: 'Awards & Achievements',
+                desc: 'Penghargaan dan pencapaian yang pernah diraih.',
+                items: [
+                    'Delegasi GADA BERCAHAYA KE-31 (Adipala)',
+                    'Juara Kepemimpinan — Youth Station Jumbara PMR Kab.',
+                    'Ketua PMR 1 periode',
+                    'Kompetisi Kaligrafi'
+                ]
+            }
+        };
+
+        document.querySelectorAll('.folder-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const key = card.dataset.folder;
+                const data = folderData[key];
+                if (!data) return;
+                document.getElementById('folderModalTitle').textContent = data.title;
+                document.getElementById('folderModalDesc').textContent = data.desc;
+                const list = document.getElementById('folderModalList');
+                list.innerHTML = data.items.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('folderModal').classList.add('active');
+            });
+        });
+
+        document.getElementById('folderModalClose').addEventListener('click', () => {
+            document.getElementById('folderModal').classList.remove('active');
+        });
+        document.getElementById('folderModal').addEventListener('click', (e) => {
+            if (e.target.id === 'folderModal') {
+                document.getElementById('folderModal').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
